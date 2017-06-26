@@ -19,10 +19,13 @@ public class BusquedaAStar implements Constantes {
         exito=false;
     }
     
+    //funcio de costo actual
     public double g(double costo, Estado proximo){
         return 10 + costo;        
     }
-    public double h(Estado proximo)
+    
+    // funcion heuristica
+    public double h(Estado proximo) 
     {
         double parte1 = Math.pow(proximo.x - objetivo.x, 2);
         double parte2 = Math.pow(proximo.y - objetivo.y, 2);
@@ -33,22 +36,26 @@ public class BusquedaAStar implements Constantes {
             double parteB = Math.pow(proximo.y - adversario.posicionY,2);
             double valor = Math.sqrt(parteA + parteB);            
             if(valor<=1){
-                calidad*=10;
+                calidad*=1000;
             }else
             if(valor<=2)
             {
-                calidad*=8;
+                calidad*=6;
             }else
             if(valor<=3)
             {
-                calidad*=6;
+                calidad*=4;
+            }else
+            if(valor<=4)
+            {
+                calidad*=2;
             }
         }
         
         return calidad;
     }
     
-    public ArrayList<Character> buscar(int x1, int y1, int x2, int y2){        
+    public Ruta buscar(int x1, int y1, int x2, int y2){        
         exito = false;
         colaEstados = new PriorityQueue<>();
         historial=new ArrayList<>();
@@ -76,19 +83,22 @@ public class BusquedaAStar implements Constantes {
         }
         System.out.println("************************");
         
-        if(exito)
-        {
+        if(exito){            
+        
+            Ruta ruta = new Ruta();           
             ArrayList<Character> pasos = new ArrayList<>();
+            ruta.pasos = pasos;
             Estado predecesor=objetivo;
             do{
                 if(predecesor.oper != 'N')
                 {
                     pasos.add(predecesor.oper);
                 }
+                ruta.calidad += predecesor.calidad;
 //                escenario.drawDebug(""+(int)predecesor.calidad, predecesor.x*PIXEL_CELDA+predecesor.x+10, predecesor.y*PIXEL_CELDA+10+predecesor.y, Color.RED);
                 predecesor=predecesor.predecesor;                
             }while(predecesor !=null);
-            return pasos;
+            return ruta;
         }
         else
         {

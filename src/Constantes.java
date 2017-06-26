@@ -5,8 +5,8 @@ import java.util.Random;
 
 public interface Constantes {
     //constantes relacionadas con el tamaño del escenarios
-    public final int PIXEL_CELDA =32;
-    public final int NUMERO_CELDAS_ANCHO=25;
+    public final int PIXEL_CELDA = 32;
+    public final int NUMERO_CELDAS_ANCHO=20;
     public final int NUMERO_CELDAS_LARGO=20;
     public final int ANCHO_BORDE_VENTANA=30;
     public final int LARGO_BORDE_VENTANA=50;

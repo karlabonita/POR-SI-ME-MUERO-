@@ -66,7 +66,7 @@ public class BusquedaAnchuraAdversario implements Constantes
         
         if(e.x< NUMERO_CELDAS_ANCHO -1)
         {
-            if(escenario.celdas[e.x+1][e.y].tipo != OBSTACULO && escenario.celdas[e.x+1][e.y].tipo != RECOMPENSA  && escenario.celdas[e.x+1][e.y].tipo != ADVERSARIO)
+            if(escenario.celdas[e.x+1][e.y].tipo != OBSTACULO && escenario.celdas[e.x+1][e.y].tipo != ADVERSARIO)
             {
             Estado derecha = new Estado(e.x+1, e.y,'R',e);
             if(!historial.contains(derecha)){
@@ -87,7 +87,7 @@ public class BusquedaAnchuraAdversario implements Constantes
     {
         if(e.x > 0)
         {
-            if(escenario.celdas[e.x-1][e.y].tipo!= OBSTACULO && escenario.celdas[e.x-1][e.y].tipo!= RECOMPENSA && escenario.celdas[e.x-1][e.y].tipo!= ADVERSARIO)
+            if(escenario.celdas[e.x-1][e.y].tipo!= OBSTACULO && escenario.celdas[e.x-1][e.y].tipo!= ADVERSARIO)
             {
                 Estado izquierda = new Estado(e.x-1,e.y,'L',e);
                 if(!historial.contains(izquierda))
@@ -107,7 +107,7 @@ public class BusquedaAnchuraAdversario implements Constantes
     private void moverAbajo(Estado e)
     {
         if(e.y+1 < NUMERO_CELDAS_LARGO){
-            if(escenario.celdas[e.x][e.y+1].tipo != OBSTACULO && escenario.celdas[e.x][e.y+1].tipo != RECOMPENSA && escenario.celdas[e.x][e.y+1].tipo != ADVERSARIO)
+            if(escenario.celdas[e.x][e.y+1].tipo != OBSTACULO && escenario.celdas[e.x][e.y+1].tipo != ADVERSARIO)
             {
             Estado abajo = new Estado(e.x,e.y+1,'D',e);
             if(!historial.contains(abajo)){
@@ -126,7 +126,7 @@ public class BusquedaAnchuraAdversario implements Constantes
     
     private void moverArriba(Estado e){
         if(e.y>0){
-            if(escenario.celdas[e.x][e.y-1].tipo != OBSTACULO && escenario.celdas[e.x][e.y-1].tipo != RECOMPENSA && escenario.celdas[e.x][e.y-1].tipo != ADVERSARIO )
+            if(escenario.celdas[e.x][e.y-1].tipo != OBSTACULO && escenario.celdas[e.x][e.y-1].tipo != ADVERSARIO )
             {
             Estado arriba = new Estado(e.x,e.y-1,'U',e);
             if(!historial.contains(arriba)){

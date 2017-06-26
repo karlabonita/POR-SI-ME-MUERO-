@@ -35,6 +35,7 @@ public class Estado implements Comparable<Estado>, Constantes
     }
     
      
+    //Compara las calidades, para ver cual calidad es mayor
     @Override
     public int compareTo(Estado o) 
     {

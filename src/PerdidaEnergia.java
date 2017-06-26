@@ -2,8 +2,8 @@ import java.util.TimerTask;
 
 public class PerdidaEnergia extends TimerTask 
 {
-    private JugadorAnchura jugador;    
-    public PerdidaEnergia(JugadorAnchura jugador) 
+    private Jugador jugador;    
+    public PerdidaEnergia(Jugador jugador) 
     {    
         this.jugador = jugador;
     }
@@ -13,7 +13,7 @@ public class PerdidaEnergia extends TimerTask
     {
         if(jugador.energia > 0)
         {
-            jugador.energia = jugador.energia - 5;
+            jugador.energia = jugador.energia - 1;
         }
     }
 }

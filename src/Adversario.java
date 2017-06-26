@@ -7,14 +7,14 @@ public class Adversario extends TimerTask implements Constantes
     public int posicionX;
     public int posicionY;
     public Escenario escenario;
-    public BusquedaAnchuraAdversario inteligencia;
-    public Celda adversario;
+    public BusquedaAnchuraAdversario inteligencia;    
+    private char tipoComido = CAMINO;
     public Adversario(Escenario escenario, int x, int y)
     {        
         posicionX=x;
         posicionY=y;
-        this.escenario=escenario;
-        adversario = new Celda(x,y,escenario.celdas[posicionX][posicionY].tipo);
+        this.escenario=escenario;        
+        escenario.celdas[posicionX][posicionY].tipo = ADVERSARIO;
         
         
         inteligencia = new BusquedaAnchuraAdversario(escenario);    
@@ -22,7 +22,8 @@ public class Adversario extends TimerTask implements Constantes
     
     public boolean puedeMoverse(int posicionX, int posicionY)
     {
-       return (posicionX < NUMERO_CELDAS_ANCHO && posicionX > - 1 && posicionY <NUMERO_CELDAS_LARGO && posicionY>-1
+       return (posicionX < NUMERO_CELDAS_ANCHO && posicionX >-1
+               && posicionY <NUMERO_CELDAS_LARGO && posicionY >-1
                && escenario.celdas[posicionX][posicionY].tipo != OBSTACULO);
     }
     
@@ -30,17 +31,29 @@ public class Adversario extends TimerTask implements Constantes
     {        
         if(posicionY>-1 && puedeMoverse (posicionX, posicionY-1 ))
         {   
-            escenario.celdas[posicionX][posicionY].tipo='V';
-            escenario.celdas[posicionX][--posicionY].tipo='A';
+            if(escenario.jugador.posicionX == posicionX && escenario.jugador.posicionY == posicionY-1){
+                escenario.celdas[posicionX][posicionY-1].tipo='T';                
+                escenario.dondeSeDibuja.cancel();
+            } else {
+                escenario.celdas[posicionX][posicionY].tipo = tipoComido;
+                tipoComido = escenario.celdas[posicionX][--posicionY].tipo;
+                escenario.celdas[posicionX][posicionY].tipo='A';
+            }
         }
     }
     
     public void moverAbajo()
-    {   
+    {           
         if(posicionY<NUMERO_CELDAS_LARGO && puedeMoverse(posicionX,posicionY +1))
-        {              
-            escenario.celdas[posicionX][posicionY].tipo='V';
-            escenario.celdas[posicionX][++posicionY].tipo='A';
+        {       
+            if(escenario.jugador.posicionX == posicionX && escenario.jugador.posicionY == posicionY+1){
+                escenario.celdas[posicionX][posicionY+1].tipo='T';                
+                escenario.dondeSeDibuja.cancel();
+            } else {
+                escenario.celdas[posicionX][posicionY].tipo= tipoComido;
+                tipoComido = escenario.celdas[posicionX][++posicionY].tipo;
+                escenario.celdas[posicionX][posicionY].tipo='A';
+            }
     
         }
     }
@@ -49,8 +62,14 @@ public class Adversario extends TimerTask implements Constantes
     {     
         if(posicionX>0 && puedeMoverse(posicionX -1,posicionY))
         {          
-            escenario.celdas[posicionX][posicionY].tipo='V';
-            escenario.celdas[--posicionX][posicionY].tipo='A';
+            if(escenario.jugador.posicionX == posicionX-1 && escenario.jugador.posicionY == posicionY){
+                escenario.celdas[posicionX-1][posicionY].tipo='T';                
+                escenario.dondeSeDibuja.cancel();
+            } else {
+                escenario.celdas[posicionX][posicionY].tipo=tipoComido;
+                tipoComido = escenario.celdas[--posicionX][posicionY].tipo;
+                escenario.celdas[posicionX][posicionY].tipo='A';
+            }
             
         }
     }
@@ -59,8 +78,14 @@ public class Adversario extends TimerTask implements Constantes
     {     
         if(posicionX< NUMERO_CELDAS_ANCHO && puedeMoverse(posicionX +1,posicionY))
         {
-            escenario.celdas[posicionX][posicionY].tipo   = 'V';
-            escenario.celdas[++posicionX][posicionY].tipo = 'A';
+            if(escenario.jugador.posicionX == posicionX+1 && escenario.jugador.posicionY == posicionY){
+                escenario.celdas[posicionX+1][posicionY].tipo='T';                
+                escenario.dondeSeDibuja.cancel();
+            } else {
+                escenario.celdas[posicionX][posicionY].tipo   = tipoComido;
+                tipoComido = escenario.celdas[++posicionX][posicionY].tipo;
+                escenario.celdas[posicionX][posicionY].tipo = 'A';
+            }
         }
     }
     
@@ -74,27 +99,16 @@ public class Adversario extends TimerTask implements Constantes
 //            {
 //                this.cancel();
 //            }
+            
             switch(ruta.get(ruta.size()-1))
-            {
+            {            
                  case 'D': moverAbajo(); break;
                  case 'U': moverArriba(); break;
                  case 'R': moverDerecha(); break;
                  case 'L': moverIzquierda(); break;
             }
-            
-         
-            System.out.println("Adversario en : "+ posicionX + ","+ posicionY);
-            if(escenario.jugador.posicionX==this.posicionX && escenario.jugador.posicionY==this.posicionY){
-                escenario.celdas[posicionX][posicionY].tipo='T';
-                System.out.println("Tipo: "+ escenario.celdas[posicionX][posicionY].tipo);
-                escenario.jugador.cancel();
-                for(Adversario adversario:escenario.adversarios)
-                {
-                    adversario.cancel();
-                }
-                
-            }
-               escenario.dondeSeDibuja.repaint();
+                        
+            escenario.dondeSeDibuja.repaint();
         }
     }
     
